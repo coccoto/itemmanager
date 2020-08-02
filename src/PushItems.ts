@@ -10,15 +10,14 @@ export default class PushItems {
         this.sheet = SpreadsheetApp.getActiveSheet()
     }
 
-    private refresh(toPostPoint: number, numPost: number, toItemsPoint: number, numTableWidth: number): void {
+    private refresh(fromPost: number, numPost: number, rowEnd: number, numTableWidth: number): void {
 
-        const rowTemplate = toItemsPoint + numPost + toPostPoint + 1
-        const selected: Spreadsheet.Range = this.sheet.getRange(rowTemplate, 1, 1, numTableWidth)
+        const selected: Spreadsheet.Range = this.sheet.getRange(rowEnd + 1, 1, 1, numTableWidth)
 
-        selected.copyTo(this.sheet.getRange(1, 1, 1, numTableWidth))
+        selected.copyTo(this.sheet.getRange(fromPost, 1, 1, numTableWidth))
 
         if (numPost > 1) {
-            this.sheet.deleteRows(2, numPost - 1)
+            this.sheet.deleteRows(fromPost + 1, numPost - 1)
         }
     }
 
@@ -50,20 +49,33 @@ export default class PushItems {
     public main () {
 
         // Post
-        const toPostPoint: number = this.tableLength('row', 1)
-        const numPost: number = toPostPoint - 1
+        const fromPost: number = 2
+        const toPostPoint: number = this.tableLength('row', fromPost)
+        const numPost: number = toPostPoint - fromPost
+
+        console.log('toPostPoint: ' + toPostPoint + ' numPoist: ' + numPost)
 
         // Items
         const fromItems: number = toPostPoint + 1
         const toItemsPoint: number = this.tableLength('row', fromItems) - fromItems + 1
+
+        console.log('fromItems: ' + fromItems + ' toItemsPoint: ' + toItemsPoint)
 
         // Table
         const toTableWidthPoint: number = this.tableLength('column', 1)
         const numTableWidth = toTableWidthPoint - 1
 
         this.move([fromItems, 1, toItemsPoint + 1, numTableWidth], [fromItems + numPost, 1, 1, 1])
-        this.move([1, 1, numPost, numTableWidth], [fromItems, 1, 1, 1])
+        // Debug
+        // this.sheet.getRange(fromItems, 1, toItemsPoint + 1, numTableWidth).setBackground('#000000')
+        // this.sheet.getRange(fromItems + numPost, 1, 1, 1).setBackground('#aaaaaa')
 
-        this.refresh(toPostPoint, numPost, toItemsPoint, numTableWidth)
+        this.move([fromPost, 1, numPost, numTableWidth], [fromItems, 1, 1, 1])
+        // Debug
+        // this.sheet.getRange(fromPost, 1, numPost, numTableWidth).setBackground('#000000')
+        // this.sheet.getRange(fromItems, 1, 1, 1).setBackground('#aaaaaa')
+
+        const rowEnd: number = toPostPoint + toItemsPoint + numPost
+        this.refresh(fromPost, numPost, rowEnd, numTableWidth)
     }
 }
