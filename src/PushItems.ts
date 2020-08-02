@@ -16,7 +16,10 @@ export default class PushItems {
         const selected: Spreadsheet.Range = this.sheet.getRange(rowTemplate, 1, 1, numTableWidth)
 
         selected.copyTo(this.sheet.getRange(1, 1, 1, numTableWidth))
-        this.sheet.deleteRows(2, numPost - 1)
+
+        if (numPost > 1) {
+            this.sheet.deleteRows(2, numPost - 1)
+        }
     }
 
     private move(fromInfo: number[], toInfo: number[]): void {
