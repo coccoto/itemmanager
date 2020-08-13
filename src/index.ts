@@ -7,5 +7,6 @@ global.PushItems = (): void => {
 }
 
 global.FormCreator = (): void => {
-    
+    const formCreator: FormCreator = new FormCreator()
+    formCreator.main()
 }

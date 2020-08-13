@@ -77,7 +77,7 @@ export default class PushItems {
         this.sheet.insertRowsBefore(itemsInfo['fromItems'], postInfo['numPost'])
 
         // Post の要素を Items 1行目に移動する。
-        this.move([postInfo['fromPost'], 1, postInfo['numPosty'], tableInfo['tableWidth']], [itemsInfo['fromItems'], 1, 1, 1])
+        this.move([postInfo['fromPost'], 1, postInfo['numPost'], tableInfo['tableWidth']], [itemsInfo['fromItems'], 1, 1, 1])
 
         // テーブルをリフレッシュする。
         const rowEnd = postInfo['fromPost'] + postInfo['toPostPoint'] + itemsInfo['toItemsPoint'] + postInfo['numPost'] // Items 区切り線までの行数 + 1
