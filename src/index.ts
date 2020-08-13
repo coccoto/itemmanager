@@ -4,3 +4,4 @@ global.PushItems = (): void => {
     const pushItems: PushItems = new PushItems()
     pushItems.main()
 }
+
