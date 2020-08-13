@@ -1,3 +1,4 @@
 declare const global: {
-    PushItems: object
+    PushItems: object,
+    FormCreator: object
 }

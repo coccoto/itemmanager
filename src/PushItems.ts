@@ -1,13 +1,17 @@
 // declares
 import Spreadsheet = GoogleAppsScript.Spreadsheet
+// class
+import TableMeasure from '@src/TableMeasure'
 
 export default class PushItems {
 
     private sheet: Spreadsheet.Sheet
+    private tableMeasure: TableMeasure
 
     public constructor() {
 
         this.sheet = SpreadsheetApp.getActiveSheet()
+        this.tableMeasure = new TableMeasure()
     }
 
     /**
@@ -63,33 +67,20 @@ export default class PushItems {
         return this.tableLength(direction, i)
     }
 
-    public main () {
+    public main() {
 
-        // Post
-        const fromPost: number = 2 // Post 1行目までの行数
-        const toPostPoint: number = this.tableLength('row', fromPost) - 1 // Post 1行目から区切りまでの行数
-        const numPost: number = toPostPoint - 1 // ポスト数
-
-        console.log('toPostPoint: ' + toPostPoint + ' numPoist: ' + numPost)
-
-        // Items
-        const fromItems: number = toPostPoint + fromPost // Items 1行目までの行数
-        const toItemsPoint: number = this.tableLength('row', fromItems) - toPostPoint - 1 // Items 1行目から区切りまでの行数
-
-        console.log('fromItems: ' + fromItems + ' toItemsPoint: ' + toItemsPoint)
-
-        // Table
-        const toTableWidthPoint: number = this.tableLength('column', 1) // 1列目から区切りまでの列数
-        const tableWidth = toTableWidthPoint - 1 // 1列目から区切り前までの列数
+        const postInfo: {[name: string]: number} = this.tableMeasure.getPostInfo()
+        const itemsInfo: {[name: string]: number} = this.tableMeasure.getItemsInfo()
+        const tableInfo: {[name: string]: number} = this.tableMeasure.getTableInfo()
 
         // Items 1行目に numPost 分の行を上に追加する。
-        this.sheet.insertRowsBefore(fromItems, numPost)
+        this.sheet.insertRowsBefore(itemsInfo['fromItems'], postInfo['numPost'])
 
         // Post の要素を Items 1行目に移動する。
-        this.move([fromPost, 1, numPost, tableWidth], [fromItems, 1, 1, 1])
+        this.move([postInfo['fromPost'], 1, postInfo['numPosty'], tableInfo['tableWidth']], [itemsInfo['fromItems'], 1, 1, 1])
 
         // テーブルをリフレッシュする。
-        const rowEnd = fromPost + toPostPoint + toItemsPoint + numPost // Items 区切り線までの行数 + 1
-        this.refresh(fromPost, numPost, rowEnd, tableWidth)
+        const rowEnd = postInfo['fromPost'] + postInfo['toPostPoint'] + itemsInfo['toItemsPoint'] + postInfo['numPost'] // Items 区切り線までの行数 + 1
+        this.refresh(postInfo['fromPost'], postInfo['numPost'], rowEnd, tableInfo['tableWidth'])
     }
 }
