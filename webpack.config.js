@@ -1,45 +1,39 @@
-const Path = require('path')
-const GasWebpackPlugin = require('gas-webpack-plugin')
+const path = require('path')
+const gasWebpackPlugin = require('gas-webpack-plugin')
+
+const ENTRY_FILE = 'index.ts'
+const BUNDLE_FILE = 'index.gs'
+
+const SOURCE = path.resolve(__dirname, 'src')
+const OUTPUT = path.resolve(__dirname, 'dist')
 
 module.exports = (env, argv) => {
-    /**
-     * @type {string}
-     */
-    const ENTRY_FILE = 'index.ts'
 
-    /**
-     * @type {string}
-     */
-    const BUNDLE_FILE = 'index.gs'
-
-    /**
-     * @type {boolena}
-     */
     const IS_DEVELOPMENT = argv.mode === 'development'
 
     return {
         entry: {
-            index: Path.resolve(__dirname, 'src', ENTRY_FILE),
+            index: path.resolve(SOURCE, ENTRY_FILE),
         },
         output: {
-            path: Path.resolve(__dirname, 'dist'),
+            path: path.resolve(OUTPUT),
             filename: BUNDLE_FILE
         },
         devtool: IS_DEVELOPMENT ? 'inline-source-map' : 'none',
         resolve: {
             extensions: [ '.js', '.ts' ],
             modules: [
-                Path.resolve(__dirname, 'node_modules'),
+                path.resolve(__dirname, 'node_modules'),
             ],
             alias: {
-                '@src': Path.resolve(__dirname, 'src'),
+                '@': path.resolve(__dirname, 'src'),
             }
         },
         module: {
             rules: RULES,
         },
         plugins: [
-            new GasWebpackPlugin(),
+            new gasWebpackPlugin(),
         ],
     }
 }

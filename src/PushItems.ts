@@ -1,7 +1,7 @@
 // declares
 import Spreadsheet = GoogleAppsScript.Spreadsheet
 // class
-import TableMeasure from '@src/TableMeasure'
+import TableMeasure from '@/TableMeasure'
 
 export default class PushItems {
 

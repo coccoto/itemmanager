@@ -1,7 +1,7 @@
 // declares
 import Spreadsheet = GoogleAppsScript.Spreadsheet
 // class
-import TableMeasure from '@src/TableMeasure'
+import TableMeasure from '@/TableMeasure'
 
 export default class FormCreator {
 
@@ -23,7 +23,7 @@ export default class FormCreator {
         this.sheet.insertRowAfter(toPostPoint)
 
         const FUNCTIONS = [
-            '=IF(INDIRECT(ADDRESS(ROW(), COLUMN()　+　1, 4)) = "", "", GOOGLEFINANCE(INDIRECT(ADDRESS(ROW(), COLUMN()　+　1, 4)), "name"))',
+            '=IF(INDIRECT(ADDRESS(ROW(), COLUMN() + 1, 4)) = "", "", GOOGLEFINANCE(INDIRECT(ADDRESS(ROW(), COLUMN() + 1, 4)), "name"))',
             '=IF(ROW() = 2, IF(INDIRECT(ADDRESS(ROW(), COLUMN() - 1, 4)) = "", "", INDIRECT(ADDRESS(ROW() + 2, COLUMN(), 4)) + INDIRECT(ADDRESS(ROW(), COLUMN() - 1, 4))), IF(INDIRECT(ADDRESS(ROW() + 1, COLUMN(), 4)) = "", IF(INDIRECT(ADDRESS(ROW(), COLUMN()　-1, 4)) = "", "", INDIRECT(ADDRESS(ROW(), COLUMN()　- 1, 4))), IF(INDIRECT(ADDRESS(ROW(), COLUMN()　-1, 4)) = "", INDIRECT(ADDRESS(ROW() + 1, COLUMN(), 4)) - INDIRECT(ADDRESS(ROW(), COLUMN() - 3, 4)), INDIRECT(ADDRESS(ROW() + 1, COLUMN(), 4)) + INDIRECT(ADDRESS(ROW(), COLUMN()　-1, 4)))))'
         ]
 

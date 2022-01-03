@@ -1,5 +1,5 @@
-import PushItems from '@src/PushItems'
-import FormCreator from '@src/FormCreator'
+import PushItems from '@/PushItems'
+import FormCreator from '@/FormCreator'
 
 global.PushItems = (): void => {
     const pushItems: PushItems = new PushItems()
